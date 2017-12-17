@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context="tunglam.mapkit2.DashBoard">
+
+
+    <RelativeLayout
+    android:id="@+id/activity_dash_board"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_below="@+id/icon"
+        android:id="@+id/dashboard_welcome"
+        android:layout_centerHorizontal="true"
+        android:text="Welcome,user"
+        android:layout_marginTop="90dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:textColor="@color/colorPrimaryDark"
+        />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_below="@+id/dashboard_welcome"
+        android:id="@+id/dashboard_input_new_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+
+        >
+
+
+        <EditText
+            android:id="@+id/dashboard_new_password"
+            android:hint="Enter new password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <Button
+        android:layout_below="@+id/dashboard_input_new_password"
+        android:id="@+id/dashboard_btn_change_pass"
+        android:text="Change Password"
+        android:background="#263238"
+        android:layout_marginTop="20dp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/dashboard_btn_change_pass"
+        android:id="@+id/dashboard_btn_logout"
+        android:text="Logout"
+        android:background="#263238"
+
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation" />
+
+</android.support.constraint.ConstraintLayout>
