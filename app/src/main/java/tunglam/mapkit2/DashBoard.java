@@ -41,8 +41,8 @@ public class DashBoard extends AppCompatActivity implements View.OnClickListener
                 case R.id.navigation_map:
                     startActivity(new Intent(DashBoard.this,MapsActivity.class));
                     return true;
-                case R.id.navigation_history:
-                    startActivity(new Intent(DashBoard.this,HistoryActivity.class));
+                case R.id.navigation_chat:
+                    startActivity(new Intent(DashBoard.this,ChatActivity.class));
                     return true;
             }
             return false;

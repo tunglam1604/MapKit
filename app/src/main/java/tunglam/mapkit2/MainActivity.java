@@ -1,5 +1,6 @@
 package tunglam.mapkit2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,82 +11,112 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
-    Button btnLogin;
-    EditText input_email,input_password;
-    TextView btnSignup,btnForgotPass;
+    //Constant
+    private static final String TAG = "MainActivity";
+    private static final int RC_SIGN_IN = 100;
 
-    RelativeLayout activity_main;
+    // Firebase
+    FirebaseAuth mAuth;
+    FirebaseDatabase mDatabase;
+    FirebaseUser mCurrentUser;
+    DatabaseReference mUsersRef;
 
-    private FirebaseAuth auth;
+    // View
+    Button signInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //View
-        btnLogin = (Button)findViewById(R.id.login_btn_login);
-        input_email = (EditText)findViewById(R.id.login_email);
-        input_password = (EditText)findViewById(R.id.login_password);
-        btnSignup = (TextView)findViewById(R.id.login_btn_signup);
-        btnForgotPass = (TextView)findViewById(R.id.login_btn_forgot_password);
-        activity_main = (RelativeLayout)findViewById(R.id.activity_main);
+        // Firebase
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance();
+        mUsersRef = mDatabase.getReference("Users");
 
-        btnSignup.setOnClickListener(this);
-        btnForgotPass.setOnClickListener(this);
-        btnLogin.setOnClickListener(this);
+        //Check if the user already login
+        if (mCurrentUser != null) {
+            //Move to signed in app
+            Intent myIntent = new Intent(MainActivity.this, MapsActivity.class);
+            MainActivity.this.startActivity(myIntent);
+            finish();
+        }
 
-        //Init Firebase Auth
-        auth = FirebaseAuth.getInstance();
-
-        //Check already session , if ok-> DashBoard
-        if(auth.getCurrentUser() != null)
-            startActivity(new Intent(MainActivity.this,DashBoard.class));
+        //If the user does not log in, allow user to login with FirebaseUI
+        signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(
+                        AuthUI.getInstance().createSignInIntentBuilder().build(),
+                        RC_SIGN_IN
+                );
+            }
+        });
     }
 
     @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.login_btn_forgot_password)
-        {
-            startActivity(new Intent(MainActivity.this,ForgotPassword.class));
-            finish();
-        }
-        else if(view.getId() == R.id.login_btn_signup)
-        {
-            startActivity(new Intent(MainActivity.this,SignUp.class));
-            finish();
-        }
-        else if(view.getId() == R.id.login_btn_login)
-        {
-            loginUser(input_email.getText().toString(),input_password.getText().toString());
-        }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        handleSignInResponse(resultCode, data);
     }
 
-    private void loginUser(String email, final String password) {
-        auth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful())
-                        {
-                            if(password.length() < 6)
-                            {
-                                Snackbar snackBar = Snackbar.make(activity_main,"Password length must be over 6", Snackbar.LENGTH_SHORT);
-                                snackBar.show();
-                            }
-                        }
-                        else{
-                            startActivity(new Intent(MainActivity.this,DashBoard.class));
-                        }
-                    }
-                });
+    private void handleSignInResponse(int resultCode, Intent data) {
+        IdpResponse response = IdpResponse.fromResultIntent(data);
+        Toast toast;
+
+        if (resultCode == RESULT_OK) { //Successfully sign in
+            // Start signed-in app
+            Intent myIntent = new Intent(MainActivity.this, MapsActivity.class);
+            MainActivity.this.startActivity(myIntent);
+            finish();
+            return;
+        } else { //Failed to sign in
+            if (response == null) { //User pressed back button
+                toast = Toast.makeText(this, "Sign in was cancelled", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+
+            if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                toast = Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+
+            if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                toast = Toast.makeText(this, "Unknown Error", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+
+        }
+        toast = Toast.makeText(this, "Unknown Error", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    // Public functions
+    public static Intent createIntent(Context context) {
+        Intent intent = new Intent();
+        intent.setClass(context, MainActivity.class);
+        return intent;
     }
 }
+
+
