@@ -11,6 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -28,16 +29,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.dynamic.IObjectWrapper;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -68,6 +74,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private SensorManager mSensorManager;
     TextView tvHeading;
 
+    // current location
+    Location currentLocation;
+    // marker that user created by tapping the map (only one on map)
+    Marker userMarker;
+    // markers for favorite places
+    Marker favoriteMarkers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +109,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
     private void sendRequest() {
@@ -133,6 +147,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         mMap.setMyLocationEnabled(true);
+
+        // tap on current location
+        mMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
+            @Override
+            public void onMyLocationClick(@NonNull Location location) {
+                if (location != null) {
+                    currentLocation = location;
+                    userMarker = mMap.addMarker(new MarkerOptions()
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.star))
+                            .title("You are here")
+                            .position(new LatLng(location.getLatitude(), location.getLongitude())));
+                }
+            }
+        });
+
+        // tap on marker
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                startActivity(new Intent(getBaseContext(), CustomizeLocation.class));
+                return false;
+            }
+        });
+
     }
 
 
@@ -208,6 +246,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     return true;
                 case R.id.navigation_chat:
                     startActivity(new Intent(MapsActivity.this,ChatActivity.class));
+                    return true;
+                case R.id.navigation_favorite:
+                    startActivity(new Intent(getBaseContext(), FavoritePlaces.class));
                     return true;
             }
             return false;
