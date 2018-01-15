@@ -173,11 +173,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
 
             originMarkers.add(mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.current))
                     .title(route.startAddress)
                     .position(route.startLocation)));
             destinationMarkers.add(mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.end_green))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.end))
                     .title(route.endAddress)
                     .position(route.endLocation)));
 
