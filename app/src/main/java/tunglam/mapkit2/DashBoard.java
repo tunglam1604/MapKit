@@ -75,7 +75,7 @@ public class DashBoard extends AppCompatActivity implements View.OnClickListener
 
         //Session check
         if(auth.getCurrentUser() != null)
-            txtWelcome.setText("Welcome , "+auth.getCurrentUser().getEmail());
+            txtWelcome.setText("Welcome , "+auth.getCurrentUser().getDisplayName());
 
 
     }

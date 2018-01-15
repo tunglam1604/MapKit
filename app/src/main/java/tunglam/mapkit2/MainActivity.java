@@ -1,7 +1,10 @@
 package tunglam.mapkit2;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -69,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 );
             }
         });
+
+
+
     }
 
     @Override
@@ -85,6 +91,23 @@ public class MainActivity extends AppCompatActivity {
             // Start signed-in app
             Intent myIntent = new Intent(MainActivity.this, MapsActivity.class);
             MainActivity.this.startActivity(myIntent);
+            //FIREBASE CLOUD MESSAGE
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                int importance = NotificationManager.IMPORTANCE_HIGH;
+                NotificationChannel mChannel = new NotificationChannel(Constants.CHANNEL_ID, Constants.CHANNEL_NAME, importance);
+                mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
+                mChannel.enableLights(true);
+                mChannel.setLightColor(Color.RED);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 300});
+                mNotificationManager.createNotificationChannel(mChannel);
+            }
+
+        /*
+        * Displaying a notification locally
+        */
+            MyNotificationManager.getInstance(this).displayNotification("Greetings", "Welcome Back");
             finish();
             return;
         } else { //Failed to sign in

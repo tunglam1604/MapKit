@@ -78,7 +78,7 @@ public class ChatActivity extends AppCompatActivity {
         //Views init
         mNewMessage = findViewById(R.id.new_chat_text);
         mSendButton = findViewById(R.id.send_button);
-        mPhotoPickerButton = findViewById(R.id.photoPickerButton);
+
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -126,20 +126,7 @@ public class ChatActivity extends AppCompatActivity {
                     updateMessages(mMessageList);
 
 
-                    // Notification
-                    Intent intent = new Intent();
-                    PendingIntent pendingIntent = PendingIntent.getActivity(ChatActivity.this, 0, intent, 0);
-                    Notification noti = new Notification.Builder(ChatActivity.this)
-                            .setTicker("MapKit - New Message in Chat Forum")
-                            .setContentTitle("MapKit - New Message in Chat Forum")
-                            .setContentText("You received 1 new message in Chat Forum. Check it now !")
-                            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                            .setContentIntent(pendingIntent).getNotification();
 
-
-                    noti.flags = Notification.FLAG_AUTO_CANCEL;
-                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                    notificationManager.notify(0, noti);
                 }
             }
 
@@ -166,46 +153,14 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        // ImagePickerButton shows an image picker to upload a image for a message
-        mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.setType("image/jpeg");
-                i.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(i, "Complete action using"), RC_PHOTO_PICKER);
-            }
-        });
+
 
 
 
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
-            Uri imageUri = data.getData();
-
-            //get the reference to stored file at database
-            StorageReference photoReference = mChatPhotosReference.child(imageUri.getLastPathSegment());
-
-            //upload file to firebase
-            photoReference.putFile(imageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    Message message = new Message(null, mUsername, downloadUrl.toString());
-                    mMessagesReference.push().setValue(message);
-                    Toast.makeText(ChatActivity.this,
-                            "Your Image Sent", Toast.LENGTH_LONG).show();
-
-                }
-            });
-        }
-    }
 
 
     private void updateMessages(List<Message> messages) {

@@ -216,7 +216,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("Compass Activity tag", "now running onResume");
+
 
         // for the system's orientation sensor registered listeners
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
@@ -225,7 +225,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("Compass Activity tag", "now running onPause");
+
 
         // to stop the listener and save battery
         mSensorManager.unregisterListener(this);
@@ -260,7 +260,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     protected void onStart() {
         super.onStart();
-        Log.i("Compass Activity tag", "now running onStart");
+
 
     }
 
@@ -269,14 +269,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     protected void onRestart() {
         super.onRestart();
-        Log.i("Compass Activity tag", "now running onRestart");
+
 
     }
 
 
     protected void onStop() {
         super.onStop();
-        Log.i("Compass Activity tag", "now running onStop");
+
 
     }
 }
