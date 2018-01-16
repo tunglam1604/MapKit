@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://C:\Users\rexna\Desktop\MapKit-master\MapKit.iml" filepath="C:\Users\rexna\Desktop\MapKit-master\MapKit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MapKit-master.iml" filepath="$PROJECT_DIR$/MapKit-master.iml" />
+      <module fileurl="file://C:\Users\User\MapKit\MapKit2.iml" filepath="C:\Users\User\MapKit\MapKit2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\rexna\Desktop\MapKit-master\app\app.iml" filepath="C:\Users\rexna\Desktop\MapKit-master\app\app.iml" />
+    </modules>
+  </component>
+</project>

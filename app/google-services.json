@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "936799155515",
+    "firebase_url": "https://mapkit-a7959.firebaseio.com",
+    "project_id": "mapkit-a7959",
+    "storage_bucket": "mapkit-a7959.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936799155515:android:8561733f713c542e",
+        "android_client_info": {
+          "package_name": "tunglam.mapkit2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "936799155515-s7pgrk3luj5bumj7ac7oj23jh7ja8kco.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tunglam.mapkit2",
+            "certificate_hash": "0798ea54da73855095ce83d98337ce20749dbf77"
+          }
+        },
+        {
+          "client_id": "936799155515-a1hgpkff1s6407s3chbsl8egek688gh1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0wZTpjOBO7IxDp5V_9fYovR9VYBGvnw4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "936799155515-a1hgpkff1s6407s3chbsl8egek688gh1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
