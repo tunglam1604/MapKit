@@ -88,6 +88,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("MapsActivity TAG", "Activity on create");
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -231,6 +232,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         .icon(BitmapDescriptorFactory.fromResource(images[i])));
             }
         }
+        Intent intent = getIntent();
+        if (intent.getStringExtra("class") != null) {
+            int pos = intent.getIntExtra("pos", 0);
+            double lat = userPlaces.get(pos).getLat();
+            double lng = userPlaces.get(pos).getLng();
+            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                    .icon(BitmapDescriptorFactory.fromResource(userPlaces.get(pos).getImage()))
+                    .title(userPlaces.get(pos).getName()));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 13));
+        }
     }
 
 
@@ -322,6 +333,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // for the system's orientation sensor registered listeners
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_GAME);
+        Log.i("MapsActivity TAG", "onResume: is Start");
     }
     @Override
     protected void onPause() {
@@ -330,7 +342,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // to stop the listener and save battery
         mSensorManager.unregisterListener(this);
+        Log.i("MapsActivity TAG", "onPause: is Start ");
     }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         // get the angle around the z-axis rotated
@@ -361,7 +375,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     protected void onStart() {
         super.onStart();
-
+        Log.i("MapsActivity TAG", "onStart: is Start");
 
     }
 
@@ -370,14 +384,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     protected void onRestart() {
         super.onRestart();
-
+        Log.i("MapsActivity TAG", "onRestart");
 
     }
 
 
     protected void onStop() {
         super.onStop();
-
+        Log.i("MapsActivity TAG", "onStop");
 
     }
 }

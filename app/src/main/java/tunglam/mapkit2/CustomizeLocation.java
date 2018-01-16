@@ -100,6 +100,9 @@ public class CustomizeLocation extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        startActivity(new Intent(this, MapsActivity.class));
+        Intent intent = new Intent(this, MapsActivity.class);
+        //intent.putExtra("class", "custom");
+        //intent.putExtra("pos", userPlaces.size() - 1);
+        startActivity(intent);
     }
 }

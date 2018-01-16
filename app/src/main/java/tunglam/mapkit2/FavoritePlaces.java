@@ -36,6 +36,7 @@ public class FavoritePlaces extends AppCompatActivity {
     String[] titles;
     String[] subtitles;
     int[] images;
+    List<UserPlace> userPlaces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class FavoritePlaces extends AppCompatActivity {
 
         // get location list from local storage
         Type type = new TypeToken<List<UserPlace>>(){}.getType();
-        List<UserPlace> userPlaces = new ArrayList<>();
+        userPlaces = new ArrayList<>();
         File file = new File(getFilesDir(), "userdata.json");
         try {
             FileReader fileReader = new FileReader(file);
@@ -75,6 +76,17 @@ public class FavoritePlaces extends AppCompatActivity {
             listView.setAdapter(adapter); // set custom list view's row
         }
         // on row tap
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getBaseContext(), MapsActivity.class);
+                intent.putExtra("pos", i);
+                intent.putExtra("class", "favorite");
+                startActivity(intent);
+            }
+        });
+
+        // on row long tap
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
